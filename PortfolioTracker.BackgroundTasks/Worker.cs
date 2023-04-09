@@ -3,17 +3,16 @@ using PortfolioTracker.BackgroundTasks.Services;
 using PortfolioTracker.Data;
 using PortfolioTracker.EntityModels.Entities;
 using PortfolioTracker.EntityModels.Enums;
+using Serilog;
 
 namespace PortfolioTracker.BackgroundTasks
 {
     public class Worker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
-        public Worker(ILogger<Worker> logger, IServiceProvider serviceProvider)
+        public Worker(IServiceProvider serviceProvider)
         {
-            _logger = logger;
             _serviceProvider = serviceProvider;
         }
 
@@ -55,17 +54,17 @@ namespace PortfolioTracker.BackgroundTasks
                                 {
                                     _db.TradingData.Add(tradingData);
                                     int affected = _db.SaveChanges();
-                                    _logger.LogInformation($"{affected} row affected for {instrument.Id}");
+                                    Log.Information($"{affected} row affected for {instrument.Id}");
                                 }
                             }
                         }
                         catch (HttpRequestException e)
                         {
-                            _logger.LogError($"Http Exception Caught On {instrument.Id}: {e.Message}");
+                            Log.Error($"Http Exception Caught On {instrument.Id}: {e.Message}");
                         }
                         catch (Exception e)
                         {
-                            _logger.LogError($"Other Exception Caught On {instrument.Id}: {e.Message}");
+                            Log.Error($"Other Exception Caught On {instrument.Id}: {e.Message}");
                         }
                         await Task.Delay(3000, stoppingToken);
                     }
