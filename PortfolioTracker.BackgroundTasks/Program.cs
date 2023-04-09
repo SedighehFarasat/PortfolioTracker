@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using PortfolioTracker.BackgroundTasks;
 using PortfolioTracker.Data;
 
+
+
+
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((builder, services) =>
     {
