@@ -8,7 +8,6 @@ public class TradingData
         Date = DateTime.Now;
     }
 
-    public int Id { get; set; }
     public string InstrumentId { get; set; }
     public DateTime Date { get; private set; }
     public Status? Status { get; set; }

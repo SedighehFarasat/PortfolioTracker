@@ -5,6 +5,10 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioTracker.EntityModels", "PortfolioTracker.EntityModels\PortfolioTracker.EntityModels.csproj", "{7D810C38-3927-40DD-B40A-6B6908CBACC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioTracker.Data", "PortfolioTracker.Data\PortfolioTracker.Data.csproj", "{8EEF3A70-1D26-4F59-86C5-520712021AD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioTracker.BackgroundTasks", "PortfolioTracker.BackgroundTasks\PortfolioTracker.BackgroundTasks.csproj", "{6A5AA792-DF0F-46CD-A5DC-B952074F6D38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7D810C38-3927-40DD-B40A-6B6908CBACC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D810C38-3927-40DD-B40A-6B6908CBACC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D810C38-3927-40DD-B40A-6B6908CBACC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EEF3A70-1D26-4F59-86C5-520712021AD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EEF3A70-1D26-4F59-86C5-520712021AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EEF3A70-1D26-4F59-86C5-520712021AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EEF3A70-1D26-4F59-86C5-520712021AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5AA792-DF0F-46CD-A5DC-B952074F6D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5AA792-DF0F-46CD-A5DC-B952074F6D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5AA792-DF0F-46CD-A5DC-B952074F6D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5AA792-DF0F-46CD-A5DC-B952074F6D38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
