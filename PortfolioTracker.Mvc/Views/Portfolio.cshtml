@@ -1,0 +1,43 @@
+﻿@page
+@using PortfolioManager.Domain.Entities
+@model PortfolioManager.Web.Pages.PortfolioModel
+<div class="row">
+    <h1 class="display-2">Portfolio</h1>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>InstrumentIsin</th>
+                <th>Quantity</th>
+                <th>AveragePrice</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Assets is not null)
+            {
+                @foreach (Asset asset in Model.Assets)
+                {
+                    <tr>
+                        <td>@asset.InstrumentIsin</td>
+                        <td>@asset.Quantity</td>
+                        <td>@asset.AveragePrice</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <p>Enter asset:</p>
+    <form method="post">
+        <div>
+            <input asp-for="Asset.InstrumentIsin" placeholder="Instrument ISIN" />
+        </div>
+        <div>
+            <input asp-for="Asset.Quantity" placeholder="Quantity" />
+        </div>
+                <div>
+            <input asp-for="Asset.AveragePrice" placeholder="Average Buy Price" />
+        </div>
+        <input type="submit" />
+    </form>
+</div>
