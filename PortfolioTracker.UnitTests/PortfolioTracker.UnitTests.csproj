@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PortfolioTracker.BackgroundTasks\PortfolioTracker.BackgroundTasks.csproj" />
     <ProjectReference Include="..\PortfolioTracker.Data\PortfolioTracker.Data.csproj" />
     <ProjectReference Include="..\PortfolioTracker.EntityModels\PortfolioTracker.EntityModels.csproj" />
   </ItemGroup>
