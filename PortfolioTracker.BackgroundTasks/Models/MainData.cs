@@ -1,4 +1,6 @@
-﻿namespace PortfolioTracker.BackgroundTasks.Models;
+﻿#nullable disable
+
+namespace PortfolioTracker.BackgroundTasks.Models;
 public class Bm
 {
     public string u { get; set; }
