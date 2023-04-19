@@ -6,7 +6,7 @@ namespace PortfolioTracker.Data.TypeConfigurations;
 public class InstrumentTypeConfiguration : IEntityTypeConfiguration<Instrument>
 {
     private const string _tableName = "Instruments";
-    private const string _file = @"F:\Algorithmic Trading\Portfolio Tracker\Documents\ISIN.csv";
+    private const string _filePath = @"F:\Algorithmic Trading\Portfolio Tracker\Documents\ISIN.csv";
 
     public void Configure(EntityTypeBuilder<Instrument> builder)
     {
@@ -32,7 +32,7 @@ public class InstrumentTypeConfiguration : IEntityTypeConfiguration<Instrument>
         
         builder.Property(x => x.Industry);
 
-        using (StreamReader textReader = File.OpenText(_file))
+        using (StreamReader textReader = File.OpenText(_filePath))
         {
             while (!textReader.EndOfStream)
             {

@@ -4,6 +4,7 @@ using PortfolioTracker.Data;
 using PortfolioTracker.EntityModels.Entities;
 using PortfolioTracker.EntityModels.Enums;
 using Serilog;
+using System.Diagnostics.Metrics;
 
 namespace PortfolioTracker.BackgroundTasks
 {
@@ -22,6 +23,12 @@ namespace PortfolioTracker.BackgroundTasks
             {
                 var _db = scope.ServiceProvider.GetRequiredService<PortfolioTrackerDbContext>();
                 var instruments = _db.Instruments.Select(x => new { x.Id, x.Ticker }).ToArray();
+                if (!instruments.Any())
+                {
+                    Log.Error($"No Instruments Found!");
+                    await StopAsync(stoppingToken);
+                }
+
                 foreach (var instrument in instruments)
                 {
                     if (instrument.Id is not null)
@@ -29,7 +36,7 @@ namespace PortfolioTracker.BackgroundTasks
                         try
                         {
                             var data = TseService.FetchLiveData(instrument.Id);
-                            if (data is not null)
+                            if (data.Result is not null)
                             {
                                 TradingData tradingData = new()
                                 {
@@ -48,7 +55,7 @@ namespace PortfolioTracker.BackgroundTasks
                                     tradingData.LowerBoundPrice = decimal.Parse(data.Result.mainData.bm.d);
                                     tradingData.NumberOfTrades = int.Parse(data.Result.mainData.dm.Replace(",", string.Empty));
                                     tradingData.TradingValue = Convertor.ToNumber(data.Result.mainData.arm);
-                                    tradingData.TradingVolume = (long)Convertor.ToNumber(data.Result.mainData.hmo);
+                                    tradingData.TradingVolume = (long?)Convertor.ToNumber(data.Result.mainData.hmo);
                                 }
                                 if (!_db.TradingData.Any(x => x.Date == tradingData.Date && x.InstrumentId == tradingData.InstrumentId))
                                 {
