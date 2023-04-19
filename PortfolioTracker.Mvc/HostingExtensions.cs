@@ -8,23 +8,30 @@ namespace PortfolioTracker.Mvc
     {
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            }
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            
             builder.Services.AddControllersWithViews();
 
             return builder.Build();
         }
 
-        public static  WebApplication ConfigurePipeline(this WebApplication app)
+        public static WebApplication ConfigurePipeline(this WebApplication app)
         {
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+                // Generates HTML error responses
+                app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -37,6 +44,7 @@ namespace PortfolioTracker.Mvc
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Endpoint routing
             app.UseRouting();
 
             app.UseAuthorization();
