@@ -7,7 +7,7 @@ public class BackgroundTasksTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        var isin = "IRO1FKHZ0001";
+        string isin = "IRO1FKHZ0001";
         await Task.Run(() => _data = BackgroundTasks.Services.TseService.FetchLiveData(isin));
     }
 
@@ -17,7 +17,13 @@ public class BackgroundTasksTests : IAsyncLifetime
     }
 
     [Fact]
-    public void TseService()
+    public void TseService_ValidIsin()
+    {
+        Assert.NotNull(_data.Result);
+    }
+
+    [Fact(Skip = "Do not know how to write two tests in asynce mode!")]    
+    public void TseService_NullIsin()
     {
         Assert.NotNull(_data.Result);
     }
