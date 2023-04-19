@@ -9,10 +9,10 @@ public class Instrument
         Assets = new HashSet<Asset>();
     }
 
-    public string Id { get; set; }
-    public string InsCode { get; set; }
-    public string Ticker { get; set; }
-    public string Name { get; set; }
+    public string? Id { get; set; }
+    public string? InsCode { get; set; }
+    public string? Ticker { get; set; }
+    public string? Name { get; set; }
     public Board? Board { get; set; }
     public Industry? Industry { get; set; }
 

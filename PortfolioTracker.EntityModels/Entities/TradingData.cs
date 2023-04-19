@@ -8,7 +8,7 @@ public class TradingData
         Date = DateTime.Now;
     }
 
-    public string InstrumentId { get; set; }
+    public string? InstrumentId { get; set; }
     public DateTime Date { get; private set; }
     public Status? Status { get; set; }
     public decimal? OpeningPrice { get; set; }
@@ -23,5 +23,5 @@ public class TradingData
     public decimal? TradingValue { get; set; }
     public long? TradingVolume { get; set; }
 
-    public Instrument Instrument { get; set; }
+    public Instrument? Instrument { get; set; }
 }
