@@ -1,6 +1,7 @@
 ﻿using PortfolioTracker.EntityModels.Enums;
 
 namespace PortfolioTracker.BackgroundTasks.Helper;
+
 public static class Convertor
 {
     public static Status? ToStatusEnum(string str)
@@ -23,8 +24,8 @@ public static class Convertor
         {
             return decimal.Parse(str.Split(" ")[0]) * 1_000_000_000;
         }
-        else 
-        { 
+        else
+        {
             return decimal.Parse(str);
         }
     }

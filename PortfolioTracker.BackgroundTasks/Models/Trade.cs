@@ -1,7 +1,8 @@
 ﻿#nullable disable
 
 namespace PortfolioTracker.BackgroundTasks.Models;
-public class Trade  
+
+public class Trade
 {   
     public string ci { get; set; }
     public object inP { get; set; }

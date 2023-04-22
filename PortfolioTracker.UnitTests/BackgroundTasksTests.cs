@@ -1,6 +1,7 @@
 ﻿using PortfolioTracker.BackgroundTasks.Models;
 
 namespace PortfolioTracker.UnitTests;
+
 public class BackgroundTasksTests : IAsyncLifetime
 {
     private Task<Trade> _data;
@@ -22,7 +23,7 @@ public class BackgroundTasksTests : IAsyncLifetime
         Assert.NotNull(_data.Result);
     }
 
-    [Fact(Skip = "Do not know how to write two tests in asynce mode!")]    
+    [Fact(Skip = "Do not know how to write two tests in asynce mode!")]
     public void TseService_NullIsin()
     {
         Assert.NotNull(_data.Result);

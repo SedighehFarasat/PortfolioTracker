@@ -1,4 +1,5 @@
 ﻿namespace PortfolioTracker.EntityModels.Enums;
+
 public enum Status
 {
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿namespace PortfolioTracker.EntityModels.Enums;
+
 /// <summary>
 /// TSE industry classification is based on ISIC standards.
 /// </summary>

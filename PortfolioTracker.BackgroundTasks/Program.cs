@@ -1,14 +1,15 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using PortfolioTracker.BackgroundTasks;
 using PortfolioTracker.Data;
 using Serilog;
-using System.Reflection;
 
 // Serilog
 Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
-                .WriteTo.File("Logs/CapitalMarketData.txt",
+                .WriteTo.File(
+                    "Logs/CapitalMarketData.txt",
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day)
                 .CreateLogger();

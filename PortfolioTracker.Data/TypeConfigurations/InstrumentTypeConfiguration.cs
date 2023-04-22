@@ -3,36 +3,37 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PortfolioTracker.EntityModels.Entities;
 
 namespace PortfolioTracker.Data.TypeConfigurations;
+
 public class InstrumentTypeConfiguration : IEntityTypeConfiguration<Instrument>
 {
-    private const string _tableName = "Instruments";
-    private const string _filePath = @"F:\Algorithmic Trading\Portfolio Tracker\Documents\ISIN.csv";
+    private const string TableName = "Instruments";
+    private const string FilePath = @"F:\Algorithmic Trading\Portfolio Tracker\Documents\ISIN.csv";
 
     public void Configure(EntityTypeBuilder<Instrument> builder)
     {
-        builder.ToTable(_tableName);
+        builder.ToTable(TableName);
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
             .IsRequired()
             .HasMaxLength(32);
-        
+
         builder.Property(x => x.InsCode)
             .HasMaxLength(32);
-        
+
         builder.Property(x => x.Ticker)
             .IsRequired()
             .HasMaxLength(32);
-        
+
         builder.Property(x => x.Name)
             .HasMaxLength(64);
-        
+
         builder.Property(x => x.Board);
-        
+
         builder.Property(x => x.Industry);
 
-        using (StreamReader textReader = File.OpenText(_filePath))
+        using (StreamReader textReader = File.OpenText(FilePath))
         {
             while (!textReader.EndOfStream)
             {
