@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using PortfolioTracker.Mvc;
-using PortfolioTracker.Mvc.Data;
 using Serilog;
 using System.Reflection;
 
@@ -9,14 +6,14 @@ using System.Reflection;
 Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
-                .WriteTo.File("Logs/PortfolioManager.txt",
+                .WriteTo.File(
+                    "Logs/PortfolioManager.txt",
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
 var appName = $"{Assembly.GetExecutingAssembly().GetName().Name} ({Assembly.GetExecutingAssembly().GetName().Version})";
 Log.Information($"{appName} Starting Up ...");
-
 
 try
 {
