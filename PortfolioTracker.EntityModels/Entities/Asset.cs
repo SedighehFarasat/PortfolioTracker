@@ -4,13 +4,15 @@ public class Asset
 {
     public int Id { get; set; }
 
+    public string? UserId { get; set; }
+
     /// <summary>
     /// Gets or sets asset's ISIN code.
     /// </summary>
     public string? InstrumentId { get; set; }
 
     /// <summary>
-    ///  Gets or sets the number of asset.
+    /// Gets or sets the number of asset.
     /// </summary>
     public long Quantity { get; set; }
 

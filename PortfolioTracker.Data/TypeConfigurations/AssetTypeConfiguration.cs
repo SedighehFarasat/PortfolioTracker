@@ -14,6 +14,10 @@ public class AssetTypeConfiguration : IEntityTypeConfiguration<Asset>
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.UserId)
+            .IsRequired()
+            .HasMaxLength(36);
+
         builder.Property(x => x.InstrumentId)
             .IsRequired()
             .HasMaxLength(32);
