@@ -4,12 +4,6 @@ namespace PortfolioTracker.EntityModels.Entities;
 
 public class Instrument
 {
-    public Instrument()
-    {
-        TradingData = new HashSet<TradingData>();
-        Assets = new HashSet<Asset>();
-    }
-
     /// <summary>
     /// Gets or sets the instrument's ISIN code.
     /// </summary>
@@ -30,8 +24,4 @@ public class Instrument
     public Board? Board { get; set; }
 
     public Industry? Industry { get; set; }
-
-    public ICollection<TradingData> TradingData { get; set; }
-
-    public ICollection<Asset> Assets { get; set; }
 }

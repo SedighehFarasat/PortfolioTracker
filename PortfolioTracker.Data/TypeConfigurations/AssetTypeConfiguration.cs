@@ -29,11 +29,6 @@ public class AssetTypeConfiguration : IEntityTypeConfiguration<Asset>
             .IsRequired()
             .HasColumnType("decimal(18,2)");
 
-        builder.HasOne(x => x.Instrument)
-                .WithMany(x => x.Assets)
-                .HasForeignKey(x => x.InstrumentId)
-                .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasIndex(x => x.InstrumentId);
     }
 }
