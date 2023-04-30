@@ -20,6 +20,4 @@ public class Asset
     /// Gets or sets the average buy price.
     /// </summary>
     public decimal AveragePrice { get; set; }
-
-    public Instrument? Instrument { get; set; }
 }

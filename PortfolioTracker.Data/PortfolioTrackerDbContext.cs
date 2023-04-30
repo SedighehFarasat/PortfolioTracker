@@ -13,10 +13,6 @@ public class PortfolioTrackerDbContext : DbContext
 
     public DbSet<Asset> Assets { get; set; }
 
-    public DbSet<Instrument> Instruments { get; set; }
-
-    public DbSet<TradingData> TradingData { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

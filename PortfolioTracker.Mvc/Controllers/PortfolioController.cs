@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PortfolioTracker.Data;
 using PortfolioTracker.EntityModels.Entities;
 using PortfolioTracker.Mvc.Models;
@@ -11,39 +10,45 @@ namespace PortfolioTracker.Mvc.Controllers
     [Authorize]
     public class PortfolioController : Controller
     {
-        private readonly ILogger<PortfolioController> _logger;
         private readonly PortfolioTrackerDbContext _db;
+        public readonly IHttpClientFactory _clientFactory;
 
-        public PortfolioController(ILogger<PortfolioController> logger, PortfolioTrackerDbContext db)
+        public PortfolioController(PortfolioTrackerDbContext db, IHttpClientFactory clientFactory)
         {
-            _logger = logger;
             _db = db;
+            _clientFactory = clientFactory;
         }
 
         [HttpGet]
-        public IActionResult GetMyPortfolio()
+        public async Task<IActionResult> GetMyPortfolio()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var assetList = _db.Assets.Include(x => x.Instrument)
-                .Join(_db.TradingData,
-                    a => a.InstrumentId,
-                    t => t.InstrumentId,
-                    (a, t) => new { a.UserId, a.InstrumentId, a.Instrument.Ticker, a.AveragePrice, a.Quantity, t.ClosingPrice, t.Date })
-                .Where(x => x.UserId == userId && x.Date.Date == DateTime.Now.Date)
+            HttpClient client = _clientFactory.CreateClient(name: "CapitalMarketDataWebApi");
+
+            var assetList = _db.Assets
+                .Where(x => x.UserId == userId)
                 .ToList();
 
-            PortfolioCommonViewModel commonViewModel = new ();
+            PortfolioCommonViewModel commonViewModel = new();
             foreach (var asset in assetList)
             {
+                HttpRequestMessage tickerRequest = new(HttpMethod.Get, $"api/instrument/{asset.InstrumentId}/InstrumentById");
+                HttpResponseMessage tickerResponse = await client.SendAsync(tickerRequest);
+                var tickerModel = await tickerResponse.Content.ReadFromJsonAsync<Instrument>();
+
+                HttpRequestMessage tradingDataRequest = new(HttpMethod.Get, $"api/tradingdata/{asset.InstrumentId}");
+                HttpResponseMessage tradingDataResponse = await client.SendAsync(tradingDataRequest);
+                var tradingDataModel = await tradingDataResponse.Content.ReadFromJsonAsync<TradingData>();
+
                 commonViewModel.GetVM.Add(new PortfolioGetMyPortfolioViewModel()
                 {
                     InstrumentId = asset.InstrumentId,
-                    Ticker = asset.Ticker,
+                    Ticker = tickerModel?.Ticker ?? string.Empty,
                     Quantity = asset.Quantity,
                     AveragePrice = asset.AveragePrice,
-                    ClosingPrice = asset.ClosingPrice,
-                    ProfitOrLoss = (asset.ClosingPrice - asset.AveragePrice) * asset.Quantity,
+                    ClosingPrice = tradingDataModel?.ClosingPrice ?? null,
+                    ProfitOrLoss = (tradingDataModel?.ClosingPrice - asset.AveragePrice) * asset.Quantity,
                 });
             }
 
