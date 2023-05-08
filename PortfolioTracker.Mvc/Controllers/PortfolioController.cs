@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PortfolioTracker.Data;
+using PortfolioTracker.EntityModels.Contracts;
 using PortfolioTracker.EntityModels.Entities;
 using PortfolioTracker.Mvc.Models;
 using System.Security.Claims;
@@ -10,12 +10,12 @@ namespace PortfolioTracker.Mvc.Controllers
     [Authorize]
     public class PortfolioController : Controller
     {
-        private readonly PortfolioTrackerDbContext _db;
+        private readonly IAssetRepository _assetRepo;
         public readonly IHttpClientFactory _clientFactory;
 
-        public PortfolioController(PortfolioTrackerDbContext db, IHttpClientFactory clientFactory)
+        public PortfolioController(IAssetRepository assetRepo, IHttpClientFactory clientFactory)
         {
-            _db = db;
+            _assetRepo = assetRepo;
             _clientFactory = clientFactory;
         }
 
@@ -26,9 +26,7 @@ namespace PortfolioTracker.Mvc.Controllers
 
             HttpClient client = _clientFactory.CreateClient(name: "CapitalMarketDataWebApi");
 
-            var assetList = _db.Assets
-                .Where(x => x.UserId == userId)
-                .ToList();
+            var assetList = await _assetRepo.GetAssetByUserId(userId);
 
             PortfolioCommonViewModel commonViewModel = new();
             foreach (var asset in assetList)
@@ -56,29 +54,27 @@ namespace PortfolioTracker.Mvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateMyPortfolio(PortfolioCommonViewModel model)
+        public async Task<IActionResult> UpdateMyPortfolio(PortfolioCommonViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var asset = await _assetRepo.GetAssetByUserIdAndInstrumentId(userId, model.PostVM.InstrumentId);
 
                 if (model.PostVM.IsSold)
                 {
-                    var asset = _db.Assets.FirstOrDefault(x => x.UserId == userId && x.InstrumentId == model.PostVM.InstrumentId);
-
                     if (asset is not null)
                     {
                         if (asset.Quantity == model.PostVM.Quantity)
                         {
-                            _db.Assets.Remove(asset);
+                            await _assetRepo.RemoveAsset(asset);
                         }
                         else
                         {
                             asset.Quantity -= model.PostVM.Quantity;
                             asset.AveragePrice = (asset.Quantity * asset.AveragePrice + model.PostVM.Quantity * model.PostVM.AveragePrice) / (asset.Quantity + model.PostVM.Quantity);
+                            await _assetRepo.UpdateAsset(asset);
                         }
-
-                        _db.SaveChanges();
                     }
                     else
                     {
@@ -87,12 +83,11 @@ namespace PortfolioTracker.Mvc.Controllers
                 }
                 else
                 {
-                    var asset = _db.Assets.FirstOrDefault(x => x.UserId == userId && x.InstrumentId == model.PostVM.InstrumentId);
-
                     if (asset is not null)
                     {
                         asset.Quantity += model.PostVM.Quantity;
                         asset.AveragePrice = (asset.Quantity * asset.AveragePrice + model.PostVM.Quantity * model.PostVM.AveragePrice) / (asset.Quantity + model.PostVM.Quantity);
+                        await _assetRepo.UpdateAsset(asset);
                     }
                     else
                     {
@@ -103,11 +98,8 @@ namespace PortfolioTracker.Mvc.Controllers
                             Quantity = model.PostVM.Quantity,
                             AveragePrice = model.PostVM.AveragePrice,
                         };
-
-                        _db.Assets.Add(newAsset);
+                        await _assetRepo.AddAsset(newAsset);
                     }
-
-                    _db.SaveChanges();
                 }
             }
             else

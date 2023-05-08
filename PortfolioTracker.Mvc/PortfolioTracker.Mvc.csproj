@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PortfolioTracker.Data\PortfolioTracker.Data.csproj" />
+    <ProjectReference Include="..\PortfolioTracker.EntityModels\PortfolioTracker.EntityModels.csproj" />
   </ItemGroup>
 
 </Project>

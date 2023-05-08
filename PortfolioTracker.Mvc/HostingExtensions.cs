@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PortfolioTracker.Data;
+using PortfolioTracker.Data.Repositories;
+using PortfolioTracker.EntityModels.Contracts;
 using PortfolioTracker.Mvc.Data;
 
 namespace PortfolioTracker.Mvc;
@@ -17,6 +19,8 @@ public static class HostingExtensions
         var identityConnectionString = builder.Configuration.GetConnectionString("DefaultIdentity") ?? throw new InvalidOperationException("Connection string 'DefaultIdentity' not found.");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(identityConnectionString));
+
+        builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 
         builder.Services.AddHttpClient(name: "CapitalMarketDataWebApi",
             configureClient: options =>
