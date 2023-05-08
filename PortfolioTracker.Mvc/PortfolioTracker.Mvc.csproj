@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<Version>1.0.0</Version>
     <UserSecretsId>aspnet-PortfolioTracker.Mvc-596c114a-1533-43c9-bf59-5e8a83098cda</UserSecretsId>
   </PropertyGroup>
 

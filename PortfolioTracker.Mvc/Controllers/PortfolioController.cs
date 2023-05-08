@@ -31,11 +31,11 @@ namespace PortfolioTracker.Mvc.Controllers
             PortfolioCommonViewModel commonViewModel = new();
             foreach (var asset in assetList)
             {
-                HttpRequestMessage tickerRequest = new(HttpMethod.Get, $"api/instrument/{asset.InstrumentId}/InstrumentById");
+                HttpRequestMessage tickerRequest = new(HttpMethod.Get, $"api/v1/instrument/{asset.InstrumentId}/InstrumentById");
                 HttpResponseMessage tickerResponse = await client.SendAsync(tickerRequest);
                 var tickerModel = await tickerResponse.Content.ReadFromJsonAsync<Instrument>();
 
-                HttpRequestMessage tradingDataRequest = new(HttpMethod.Get, $"api/tradingdata/{asset.InstrumentId}");
+                HttpRequestMessage tradingDataRequest = new(HttpMethod.Get, $"api/v1/tradingdata/{asset.InstrumentId}");
                 HttpResponseMessage tradingDataResponse = await client.SendAsync(tradingDataRequest);
                 var tradingDataModel = await tradingDataResponse.Content.ReadFromJsonAsync<TradingData>();
 
