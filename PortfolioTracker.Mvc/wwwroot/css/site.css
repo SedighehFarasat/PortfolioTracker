@@ -21,7 +21,7 @@ body {
   margin-bottom: 60px;
 }
 
-form {
+#assetForm {
     position: fixed;
     bottom: 15%;
 }
