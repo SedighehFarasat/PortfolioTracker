@@ -1,0 +1,62 @@
+﻿@model PortfolioCommonViewModel
+@{
+    ViewData["Title"] = "My Portfolio";
+}
+
+<div class="row text-center">
+    <h1 class="display-5">Welcome To My Portfolio Page</h1>
+</div>
+</br>
+<div class="row">
+    <table class="table table-light table-striped table-hover">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Instrument ISIN</th>
+                <th>Ticker</th>
+                <th>Quantity</th>
+                <th>Average Price (Rials)</th>
+                <th>Today Price (Rials)</th>
+                <th>P&L (Rials)</th>
+            </tr>
+        </thead>
+        <tbody class="align-middle">
+            @if (Model is not null)
+            {
+                @foreach (var item in Model.GetVM)
+                {
+                    <tr>
+                        <td>@item.InstrumentId</td>
+                        <td>@item.Ticker?.Replace("1", string.Empty)</td>
+                        <td>@item.Quantity.ToString("N0")</td>
+                        <td>@item.AveragePrice.ToString("N0")</td>
+                        <td>@item.ClosingPrice?.ToString("N0")</td>
+                        <td>@item.ProfitOrLoss?.ToString("N0")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <form id="assetForm" asp-controller="Portfolio" asp-action="UpdateMyPortfolio" method="post">
+        <h5>Update Your Portfolio</h5>
+        <div class="row">
+            <div class="col">
+                <input asp-for="PostVM.InstrumentId" type="text" class="form-control" placeholder="Instrument ISIN">
+            </div>
+            <div class="col">
+                <input asp-for="PostVM.Quantity" type="text" class="form-control" placeholder="Quantity">
+            </div>
+            <div class="col">
+                <input asp-for="PostVM.AveragePrice" type="text" class="form-control" placeholder="Average Buy Price">
+            </div>
+            <div class="form-check col-auto my-2">
+                <input asp-for="PostVM.IsSold" class="form-check-input" type="checkbox" id="isSold">
+                <label class="form-check-label" for="isSold">Asset Sold</label>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-light btn-outline-primary">Update Asset</button>
+            </div>
+        </div>
+    </form>
+</div>
