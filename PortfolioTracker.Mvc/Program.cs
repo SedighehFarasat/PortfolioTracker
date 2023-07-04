@@ -7,7 +7,7 @@ Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
                 .WriteTo.File(
-                    "Logs/PortfolioManager.txt",
+                    "Logs/PortfolioTracker.txt",
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day)
                 .CreateLogger();
