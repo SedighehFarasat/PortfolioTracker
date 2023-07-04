@@ -26,7 +26,7 @@ namespace PortfolioTracker.Mvc.Controllers
 
             HttpClient client = _clientFactory.CreateClient(name: "CapitalMarketDataWebApi");
 
-            var assetList = await _assetRepo.GetAssetByUserId(userId);
+            var assetList = await _assetRepo.GetByUserId(userId);
 
             PortfolioCommonViewModel commonViewModel = new();
             foreach (var asset in assetList)
@@ -59,7 +59,7 @@ namespace PortfolioTracker.Mvc.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var asset = await _assetRepo.GetAssetByUserIdAndInstrumentId(userId, model.PostVM.InstrumentId);
+                var asset = await _assetRepo.GetByUserIdAndInstrumentId(userId, model.PostVM.InstrumentId);
 
                 if (model.PostVM.IsSold)
                 {
@@ -67,13 +67,13 @@ namespace PortfolioTracker.Mvc.Controllers
                     {
                         if (asset.Quantity == model.PostVM.Quantity)
                         {
-                            await _assetRepo.RemoveAsset(asset);
+                            await _assetRepo.Remove(asset);
                         }
                         else
                         {
                             asset.Quantity -= model.PostVM.Quantity;
                             asset.AveragePrice = (asset.Quantity * asset.AveragePrice + model.PostVM.Quantity * model.PostVM.AveragePrice) / (asset.Quantity + model.PostVM.Quantity);
-                            await _assetRepo.UpdateAsset(asset);
+                            await _assetRepo.Update(asset);
                         }
                     }
                     else
@@ -87,7 +87,7 @@ namespace PortfolioTracker.Mvc.Controllers
                     {
                         asset.Quantity += model.PostVM.Quantity;
                         asset.AveragePrice = (asset.Quantity * asset.AveragePrice + model.PostVM.Quantity * model.PostVM.AveragePrice) / (asset.Quantity + model.PostVM.Quantity);
-                        await _assetRepo.UpdateAsset(asset);
+                        await _assetRepo.Update(asset);
                     }
                     else
                     {
@@ -98,7 +98,7 @@ namespace PortfolioTracker.Mvc.Controllers
                             Quantity = model.PostVM.Quantity,
                             AveragePrice = model.PostVM.AveragePrice,
                         };
-                        await _assetRepo.AddAsset(newAsset);
+                        await _assetRepo.Add(newAsset);
                     }
                 }
             }

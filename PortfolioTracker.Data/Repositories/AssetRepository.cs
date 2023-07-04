@@ -13,7 +13,7 @@ public class AssetRepository : IAssetRepository
         _db = db;
     }
 
-    public async Task<int> AddAsset(Asset asset)
+    public async Task<int> Add(Asset asset)
     {
         ArgumentNullException.ThrowIfNull(asset);
 
@@ -22,24 +22,24 @@ public class AssetRepository : IAssetRepository
         return affected;
     }
 
-    public async Task<IEnumerable<Asset>> GetAssetByUserId(string userId)
+    public async Task<IEnumerable<Asset>> GetByUserId(string userId)
     {
         return await _db.Assets.Where(x => x.UserId == userId).ToListAsync();
     }
 
-    public async Task<Asset?> GetAssetByUserIdAndInstrumentId(string userId, string instrumentId)
+    public async Task<Asset?> GetByUserIdAndInstrumentId(string userId, string instrumentId)
     {
         return await _db.Assets.FirstOrDefaultAsync(x => x.UserId == userId && x.InstrumentId == instrumentId);
     }
 
-    public async Task<int> RemoveAsset(Asset asset)
+    public async Task<int> Remove(Asset asset)
     {
         _db.Assets.Remove(asset);
         int affected = await _db.SaveChangesAsync();
         return affected;
     }
 
-    public async Task<int> UpdateAsset(Asset asset)
+    public async Task<int> Update(Asset asset)
     {
         _db.Entry(asset).State = EntityState.Modified;
         int affected = await _db.SaveChangesAsync();
