@@ -70,7 +70,7 @@ public class PortfolioController : Controller
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId is null) return StatusCode(401, "User is not authorized");
 
-            if (model.PostVM.InstrumentId is null) return BadRequest();
+            if (model.PostVM?.InstrumentId is null) return BadRequest();
             var asset = await _assetRepo.GetByUserIdAndInstrumentId(userId, model.PostVM.InstrumentId);
 
             if (model.PostVM.IsSold)
@@ -105,7 +105,7 @@ public class PortfolioController : Controller
                 {
                     Asset newAsset = new()
                     {
-                        UserId = userId,// User.FindFirstValue(ClaimTypes.NameIdentifier).ToString(),
+                        UserId = userId,
                         InstrumentId = model.PostVM.InstrumentId,
                         Quantity = model.PostVM.Quantity,
                         AveragePrice = model.PostVM.AveragePrice,

@@ -8,5 +8,5 @@ public class PortfolioCommonViewModel
     }
 
     public List<PortfolioGetMyPortfolioViewModel> GetVM { get; set; }
-    public PortfolioUpdateMyPortfolioViewModel PostVM { get; set; }
+    public PortfolioUpdateMyPortfolioViewModel? PostVM { get; set; }
 }
