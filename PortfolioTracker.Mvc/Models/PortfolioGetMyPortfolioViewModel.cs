@@ -12,5 +12,7 @@ public class PortfolioGetMyPortfolioViewModel
 
     public decimal? ClosingPrice { get; set; }
 
-    public decimal? ProfitOrLoss { get; set; }
+    public decimal? ProfitOrLossMoney { get; set; }
+
+    public decimal? ProfitOrLossPercent { get; set; }
 }

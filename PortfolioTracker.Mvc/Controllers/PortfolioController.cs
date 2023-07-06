@@ -54,7 +54,8 @@ public class PortfolioController : Controller
                 Quantity = asset.Quantity,
                 AveragePrice = asset.AveragePrice,
                 ClosingPrice = tradingDataModel?.ClosingPrice ?? null,
-                ProfitOrLoss = (tradingDataModel?.ClosingPrice - asset.AveragePrice) * asset.Quantity,
+                ProfitOrLossMoney = (tradingDataModel?.ClosingPrice - asset.AveragePrice) * asset.Quantity,
+                ProfitOrLossPercent = ((tradingDataModel?.ClosingPrice - asset.AveragePrice) / asset.AveragePrice) * 100,
             });
         }
 

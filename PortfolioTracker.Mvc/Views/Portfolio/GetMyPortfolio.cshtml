@@ -17,6 +17,7 @@
                 <th>Average Price (Rials)</th>
                 <th>Today Price (Rials)</th>
                 <th>P&L (Rials)</th>
+                <th>P&L (%)</th>
             </tr>
         </thead>
         <tbody class="align-middle">
@@ -30,7 +31,8 @@
                         <td>@item.Quantity.ToString("N0")</td>
                         <td>@item.AveragePrice.ToString("N0")</td>
                         <td>@item.ClosingPrice?.ToString("N0")</td>
-                        <td>@item.ProfitOrLoss?.ToString("N0")</td>
+                        <td>@item.ProfitOrLossMoney?.ToString("N0")</td>
+                        <td>@item.ProfitOrLossPercent?.ToString("N0")</td>
                     </tr>
                 }
             }
