@@ -23,21 +23,29 @@ public class PortfolioController : Controller
     public async Task<IActionResult> GetMyPortfolio()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        HttpClient client = _clientFactory.CreateClient(name: "CapitalMarketDataWebApi");
+        if (userId is null) return StatusCode(401, "User Not Authorized.");
 
         var assetList = await _assetRepo.GetByUserId(userId);
 
         PortfolioCommonViewModel commonViewModel = new();
+        HttpClient client = _clientFactory.CreateClient(name: "CapitalMarketDataWebApi");
         foreach (var asset in assetList)
         {
+            Instrument? tickerModel = null;
             HttpRequestMessage tickerRequest = new(HttpMethod.Get, $"api/v1/instrument/{asset.InstrumentId}/InstrumentById");
             HttpResponseMessage tickerResponse = await client.SendAsync(tickerRequest);
-            var tickerModel = await tickerResponse.Content.ReadFromJsonAsync<Instrument>();
+            if (tickerResponse.IsSuccessStatusCode)
+            {
+                tickerModel = await tickerResponse.Content.ReadFromJsonAsync<Instrument>();
+            }
 
+            TradingData? tradingDataModel = null;
             HttpRequestMessage tradingDataRequest = new(HttpMethod.Get, $"api/v1/tradingdata/{asset.InstrumentId}");
             HttpResponseMessage tradingDataResponse = await client.SendAsync(tradingDataRequest);
-            var tradingDataModel = await tradingDataResponse.Content.ReadFromJsonAsync<TradingData>();
+            if (tickerResponse.IsSuccessStatusCode)
+            {
+                tradingDataModel = await tradingDataResponse.Content.ReadFromJsonAsync<TradingData>();
+            }
 
             commonViewModel.GetVM.Add(new PortfolioGetMyPortfolioViewModel()
             {
@@ -59,6 +67,9 @@ public class PortfolioController : Controller
         if (ModelState.IsValid)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null) return StatusCode(401, "User is not authorized");
+
+            if (model.PostVM.InstrumentId is null) return BadRequest();
             var asset = await _assetRepo.GetByUserIdAndInstrumentId(userId, model.PostVM.InstrumentId);
 
             if (model.PostVM.IsSold)
@@ -93,7 +104,7 @@ public class PortfolioController : Controller
                 {
                     Asset newAsset = new()
                     {
-                        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString(),
+                        UserId = userId,// User.FindFirstValue(ClaimTypes.NameIdentifier).ToString(),
                         InstrumentId = model.PostVM.InstrumentId,
                         Quantity = model.PostVM.Quantity,
                         AveragePrice = model.PostVM.AveragePrice,
